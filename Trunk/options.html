@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="options.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="container">
+  <div class="row">
+    <div class="span3"> 
+      <!-- <h3><img id="logo" src="Ac.png" style="" width="64" height="64" />CheckAC</h3> -->
+      <div id="Logo_aera"> <img id="logo_img64" class="pull-left" src="Ac.png"  width="64" height="64">
+        <div>
+          <h3 style="line-height:20px;">CheckAc<small style="padding-left:5px;font-size:25%"><span  class="versionNumber"></span></small>
+            <p><small>刷题的好帮手</small></p>
+          </h3>
+        </div>
+      </div>
+    </div>
+    <div class="span8">
+      <div id="alert_infobar" class="alert alert-success" > 
+        <!-- <a href="#" class="close" data-dismiss="alert">×</a> -->
+        <p id="info-bar">更改完设置后记得按保存按钮哦!</p>
+      </div>
+    </div>
+    <input type="button" id="but_save_setting" class="btn btn-primary  btn-large " value="保存" />
+  </div>
+  <div class="row">
+    <div class="span3">
+      <ul class="nav nav-list nav-sidenav affix-top">
+        <li class="active"> <a href="#tab_gengeral" data-toggle="tab"><i class="icon-chevron-right"></i>常规</a></li>
+        <li> <a href="#tab_POJ" data-toggle="tab"><i class="icon-chevron-right"></i>POJ</a></li>
+        <li> <a href="#tab_ZOJ" data-toggle="tab"><i class="icon-chevron-right"></i>ZOJ</a></li>
+        <li> <a href="#tab_ToDo" data-toggle="tab"><i class="icon-chevron-right"></i>ToDo List</a></li>
+        <li> <a href="#tab_About" data-toggle="tab"><i class="icon-chevron-right"></i>关于</a></li>
+      </ul>
+      <input type="button" id="but_load_ac" class="btn"  style="display:none" value="加载"/>
+    </div>
+    <div class="span9">
+      <div class="tab-content" id="settings_area">
+        <div class="tab-pane active" id="tab_gengeral">
+          <table class="table table-striped table-hover table-bordered" id="OJ_table">
+            <thead>
+              <tr>
+                <th><p>OJ</p></th>
+                <th><p>ID</p></th>
+                <th><p>Accepted</p></th>
+                <th><input type="button" class="btn" id="but_refresh_All"value="全部刷新" /></th>
+                <th><p>使用代理</p></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr id="POJ_line">
+                <td><p>POJ</p></td>
+                <td><input name="input" type="text" id="txt_POJ_ID" value="tsfn" /></td>
+                <td><p id="POJ_AC_Number" ></p></td>
+                <td><input type="button" class="btn" id="but_refresh_POJ"value="刷新" /></td>
+                <td><select id="POJ_Agency" class="span2" >
+                    <option>No</option>
+                    <option>NJUST</option>
+                  </select></td>
+              </tr>
+              <tr id="ZOJ_line">
+                <td><p>ZOJ</p></td>
+                <td><input name="input" type="text" id="txt_ZOJ_ID" value="tsfn" /></td>
+                <td><p id="ZOJ_AC_Number"></p></td>
+                <td><input type="button" class="btn" id="but_refresh_ZOJ"value="刷新" /></td>
+                <td><select id="ZOJ_Agency" class="span2" >
+                    <option>No</option>
+                    <option>NJUST</option>
+                  </select></td>
+                  </td>
+              </tr>
+              <tr>
+                <td><p>Total</p></td>
+                <td></td>
+                <td><p id="Sum_AC_Number"></p></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="span2">
+              <h5>默认OJ: <i class="icon-info-sign tool_tip" data-toggle="tooltip" data-placement="top" title="" data-original-title="输入题目编号时不输入OJ名称默认使用的OJ"></i></h5>
+            </div>
+            <div class="span7">
+              <select id="default_OJ">
+                <option>POJ</option>
+                <option>ZOJ</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" id="tab_POJ">
+          <h5>POJ 过题列表(空格分隔):</h5>
+          <p>
+            <textarea id="POJ_AC" style="width:586px;font-size:17px"  name="POJ_Accepted_Problem" rows="20"></textarea>
+          </p>
+        </div>
+        <div class="tab-pane" id="tab_ZOJ">
+          <h5>ZOJ 过题列表(空格分隔):</h5>
+          <p>
+            <textarea id="ZOJ_AC" style="width:586px;font-size:17px"  name="ZOJ_Accepted_Problem" rows="20"></textarea>
+          </p>
+        </div>
+        <div class="tab-pane" id="tab_ToDo">
+          <h5>ToDo List(测试版):</h5>
+          <p>
+          <table class="table table-striped table-hover table-bordered" id="table_ToDo">
+            <caption class="text-right">
+            <button class="btn" id="btn_add_line"><i class="icon-plus"></i>添加题目</button>
+            </caption>
+            <thead>
+              <tr>
+                <th id="table_ToDo_Problem" class="span3">题目</th>
+                <th>备注</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!--
+                <tr>
+                  <td>POJ1000
+                    <div class="pull-right edit-group"> <a href="#"><i class="icon-edit"></i><span>编辑</span></a><a href="#"><i class="icon-remove"></i><span>删除</span></a> </div></td>
+                  <td>人人必过dfdadfadlfadslkfjadslfjad</td>
+                </tr>
+                -->
+            </tbody>
+          </table>
+          <textarea id="ToDo_List" class="span7" rows="6" style="display:none"></textarea>
+          </p>
+        </div>
+        <div class="tab-pane" id="tab_About">
+          <h3>关于</h3>
+          <div class="divider"></div>
+          <div class="divider"></div>
+          <div id="Author_Text" style="display: block">
+            <p>CheckAC是一款面向广大ACMer的实用性插件，他可以有效的让你在各大oj（目前支持zoj，poj）之间游刃有余，从茫茫题海中帮助你快速的记录和识别出已经AC的题目，并让你可以随心所欲的记录下你的AC之路。</p>
+            <p>经过开发人员的不断完善和测试CheckAC已经具有了极富亲和力的UI和简单直接的使用方法，程序的完善需要大家的帮助，欢迎指出插件的不足和bug，大家可以通过最下方的联系方式与我们取得联系。如果您觉得不错可以帮我们推荐给其他ACMer，这会让我们十分感谢，并让插件快速的成长起来。</p>
+            <p>如有疑问或建议,请联系<a href="mailto:CheckAc@163.com">CheckAc@163.com</a></p>
+            <p>欢迎您的使用，非常感谢！</p>
+            <div class="text-right" id="">
+            	<p>CheckAC开发小组</p>
+                <p>Comzyh,Alwa,Yangz</p>
+                <p>敬上</p>
+                <p>2013-8-19</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- TodoList edit Modal -->
+  <div id="Edit_ToDolist_item" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="Modal_title">编辑项目</h3>
+    </div>
+    <div class="modal-body">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label">题目</label>
+          <div class="controls">
+            <input id="Modal_PID" type="text"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label">备注</label>
+          <div class="controls">
+            <input id="Modal_Comment" type="text"/>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+      <button class="btn btn-primary" id="Modal_Save">确定</button>
+    </div>
+  </div>
+</div>
+<!-- JS --> 
+<script src="js/jquery-2.0.3.min.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+<script  type="text/javascript" src="options.js"></script>
+</body>
+</html>

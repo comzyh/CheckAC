@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<style type="text/css">
+#title {
+	margin-bottom:0;
+}
+#main {
+	margin-left:10px;
+	margin-right:10px;
+}
+.txt-success {
+	background-color:#6F9 !important;
+	border-color:#6F9 !important;
+	color:black !important;
+}
+.txt-fail {
+	background-color:#F99 !important;
+	border-color:#F99 !important;
+	color:black !important;
+}
+.input_with_icon span {
+	top:0;
+	right:10px;
+	position:absolute;
+	line-height:30px;
+}
+.input_with_icon {
+	height:28px;
+	position:relative;
+}
+#div_ToDo_span
+{
+    position:relative;
+}
+#ToDoList tbody td
+{
+	cursor:pointer;
+}
+</style>
+</head>
+<body>
+<div class="span3" id=main>
+    <h4 id="title">AC检查器<small>
+        <div class="text-right pull-right" id="Options"><a href="#"><i class="icon-wrench"></i><small>选项</small></a></div>
+    </small>
+        <p class="text-right" id="p_ver"> <small>Beta version</small></p>
+    </h4>
+  <div class="row">
+    <div class="span3 text-center">
+      <div id="inputform">
+        <div id="div_PID" class="control-group input_with_icon  ">
+          <input id="input_Pid" type="text" class="span3"  placeholder="题目号,如:POJ1000" />
+          <span class=""><i class="icon-info-sign tool_tip" data-toggle="tooltip" data-placement="bottom" data-container ="#div_PID" title="" data-original-title="输入题号后,背景变为绿色表示AC,红色表示尚未AC,按回车进入相应题目"></i></span> </div>
+        <div class="btn-group ">
+          <button id="but_Enter" class="btn">进入题目</button>
+          <button class="btn dropdown-toggle" data-toggle="dropdown"> <span class="caret"></span> </button>
+          <ul class="dropdown-menu">
+            <!-- dropdown menu links -->
+            <li> <a href="#" id="orginal_OJ">原OJ</a> </li>
+            <li><a href="#" id="njust_agency_oj">NJUST代理</a> </li>
+            <li>
+              <div class="divider"></div>
+            </li>
+            <li> <a href="#" id="Submit">Submit</a> </li>
+            <li> <a href="#" id="Submit_NJUST">Submit(NJUST代理)</a> </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--ToDo_List -->
+  <div class="row" id="div_ToDo">
+    <div class="span3 control-group  text-right" id="div_ToDo_span">
+    <table id="ToDoList" class="table  table-hover ">
+      <thead>
+        <tr>
+            <th><p>ToDoList<i class="icon-info-sign tool_tip" data-toggle="tooltip" data-placement="bottom" data-container ="#div_PID" title="" data-original-title="在本扩展[选项]页面中[ToDoList]选项卡编辑ToDoList"></i></p></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+      </div>
+  </div>
+</div>
+<script src="js/jquery-2.0.3.min.js"></script> 
+<script src="js/bootstrap.min.js"></script> 
+<script type="text/javascript" src="popup.js"></script>
+</body>
+<!-- Zyh Version -->
