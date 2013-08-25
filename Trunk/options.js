@@ -1,4 +1,5 @@
 // JavaScript Document
+BGP=chrome.extension.getBackgroundPage();//
 //信息提示
 function Info(msg,cls)
 {
@@ -27,84 +28,55 @@ function loadXMLDoc(url,delegate) {
 		alert("你的浏览器不支持XMLHttpRequest");
 	}
 }
-function POJ_res(){
-	r=this;
-	if (r.readyState == 4) { // 4 = "loaded"
-		if (r.status == 200) {
-			// 200 = OK
-			str = r.responseText;
-			strs = str.match(/p\(\d{4}\)/g);
-			$("#POJ_AC_Number").text(strs.length);
-			$("#POJ_AC").val("");
-			for (i = 0; i < strs.length; i++) {
-				document.getElementById("POJ_AC").value += strs[i].match(/\d{4}/)[0] + " "; //	  	table.insertBefore(div)
-			}
-			Save_AC("POJ",$("#txt_POJ_ID").val());
+function POJ_res(status,addition){
+	switch(status)
+	{
+		case -1:
+			if (addition!=null)
+				addition="(HTTP "+ addition + ")";
+			Info("从POJ读取信息失败,可能是网络故障"+addition,"alert-error");break;
+		case 1:
+			Info("正在发送请求","alert-info");break;
+		case 3:
+			Info("正在解析响应内容","alert-info");break;
+		case 4:
+			Load_AC("POJ",$("#txt_POJ_ID").val());
 			var myDate = new Date();
 			Info( "POJ于"+	myDate.toLocaleTimeString() + "刷新","alert-success");
 			$("#POJ_line").addClass("success");
 			calc_sum();
-		} else 
-			Info("从POJ读取信息失败,可能是网络故障","alert-error");
+			break;
 	}
-	else if (r.readyState == 3)
-		Info("正在解析响应内容","alert-info");
-	else if (r.readyState == 1)
-		Info("正在发送请求","alert-info");
 }
 function Refresh_POJbyID() {
 	txtID = $("#txt_POJ_ID").val();
-	loadXMLDoc("http://poj.org/userstatus?user_id=" + txtID,POJ_res);
+	BGP.Refresh_POJbyID(txtID,POJ_res);
 }
 //-----ZOJ-----
-function ZOJ_res2(){
-	r=this;
-	if (r.readyState == 4) { // 4 = "loaded"
-		if (r.status == 200) {
-			// 200 = OK
-			str = r.responseText;
-			strs = str.match(/\d{4}\">\d{4}/g);
-			$("#ZOJ_AC_Number").text(strs.length);
-			$("#ZOJ_AC").val("");
-			ZOJ_AC="";
-			for (i = 0; i < strs.length; i++)
-				ZOJ_AC+=strs[i].match(/\d{4}/)[0] + " ";
-			$("#ZOJ_AC").val(ZOJ_AC);
-			Save_AC("ZOJ",$("#txt_ZOJ_ID").val());
+function ZOJ_res(status,addition){
+	switch(status)
+	{
+		case -1:
+			if (addition!=null)
+				addition="(HTTP "+ addition + ")";
+			Info("从ZOJ读取信息失败,可能是网络故障"+addition,"alert-error");break;
+		case 1:
+			Info("正在发送请求","alert-info");break;
+		case 3:
+			Info("正在解析响应内容","alert-info");break;
+		case 4:
+			Load_AC("ZOJ",$("#txt_ZOJ_ID").val());
 			var myDate = new Date();
 			Info( "ZOJ于"+	myDate.toLocaleTimeString() + "刷新","alert-success");
 			$("#ZOJ_line").addClass("success");
 			calc_sum();
-		} else 
-			Info("从POJ读取信息失败,可能是网络故障","alert-error");
+			break;
 	}
-	else if (this.readyState == 3)
-		Info("正在解析响应内容","alert-info");
-	else if (this.readyState == 1)
-		Info("正在发送请求","alert-info");
-}
-function ZOJ_res1(){
-	r=this;
-	if (r.readyState == 4) { // 4 = "loaded"
-		if (r.status == 200) {
-			// 200 = OK
-			str = r.responseText;
-			ID_Code = str.match(/userId=\d+/);
-			ID_Code=ID_Code[0].match(/\d+/);
-			Info(ID_Code,"alert-success");
-			loadXMLDoc("http://acm.zju.edu.cn/onlinejudge/showUserStatus.do?userId="+ ID_Code,ZOJ_res2);
-		} else 
-			Info("从POJ读取信息失败,可能是网络故障","alert-error");
-	}
-	else if (this.readyState == 3)
-		Info("正在解析响应内容","alert-info");
-	else if (this.readyState == 1)
-		Info("正在发送请求","alert-info");
 }
 function Refresh_ZOJbyID()
 {
 	txtID = $("#txt_ZOJ_ID").val();
-	loadXMLDoc("http://acm.zju.edu.cn/onlinejudge/showRuns.do?contestId=1&handle="+ txtID,ZOJ_res1);
+	BGP.Refresh_ZOJbyID(txtID,ZOJ_res);
 }
 //-----Settings------
 function Select_by_Text(id,text)
@@ -249,9 +221,10 @@ function Load_ToDoList()
 	}
 
 }
-
 //Settings
 function Save_Settings() {
+
+
 	My_POJ_ID=$("#txt_POJ_ID").val();
 	My_ZOJ_ID=$("#txt_ZOJ_ID").val();
 	localStorage["My_POJ_ID"] =My_POJ_ID;
