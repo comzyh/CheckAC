@@ -197,34 +197,39 @@ function addline(PID,Comment,edit)
 function Save_ToDoList()
 {
 	var lines=$("#table_ToDo tbody tr");
-	text="";
+	var list =new Array();
 	for (var i=0;i<lines.length;i++)
 	{
-		text+=$(lines[i]).find(".ToDo_PID").text();
-		text+=";";
-		text+=$(lines[i]).find(".ToDo_Comment").text();
-		text+="\n";
+		var item=new Object;
+		item.PID=$(lines[i]).find(".ToDo_PID").text();
+		item.Comment=$(lines[i]).find(".ToDo_Comment").text();
+		list.push(item);
 	}
-	localStorage["ToDO_List"]=text;
+	localStorage["ToDO_List"]=JSON.stringify(list); ;
 }
 function Load_ToDoList()
 {
 	text=localStorage["ToDO_List"];
 	if(text==null)
 		return;
-	$("#TestAera").val(text);
-	lines=text.split("\n");
-	for (var i=0;i<lines.length-1;i++)
+	try
 	{
-		sp=lines[i].split(";");
-		addline(sp[0],sp[1]);
+   		list=JSON.parse(text);
+		for (var i=0;i<list.length;i++)
+			addline(list[i].PID,list[i].Comment);
 	}
-
+	catch(err)//版本兼容性,支持1.0.2 之前版本
+	{
+		lines=text.split("\n");
+		for (var i=0;i<lines.length-1;i++)
+		{
+			sp=lines[i].split(";");
+			addline(sp[0],sp[1]);
+		}
+	}
 }
 //Settings
 function Save_Settings() {
-
-
 	My_POJ_ID=$("#txt_POJ_ID").val();
 	My_ZOJ_ID=$("#txt_ZOJ_ID").val();
 	localStorage["My_POJ_ID"] =My_POJ_ID;

@@ -119,14 +119,22 @@ function Add_Todo(PID,Comment)
 function Load_ToDoList()
 {
 	text=localStorage["ToDO_List"];
-	if (text==null)
-		return ;
-	$("#TestAera").val(text);
-	lines=text.split("\n");
-	for (var i=0;i<lines.length-1;i++)
+	if(text==null)
+		return;
+	try
 	{
-		sp=lines[i].split(";");
-        Add_Todo(sp[0],sp[1]);
+   		list=JSON.parse(text);
+		for (var i=0;i<list.length;i++)
+			Add_Todo(list[i].PID,list[i].Comment);
+	}
+	catch(err)//版本兼容性,支持1.0.2 之前版本
+	{
+		lines=text.split("\n");
+		for (var i=0;i<lines.length-1;i++)
+		{
+			sp=lines[i].split(";");
+			Add_Todo(sp[0],sp[1]);
+		}
 	}
 
 }
