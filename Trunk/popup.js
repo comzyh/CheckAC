@@ -55,9 +55,11 @@ function check_Accepted()
 		ZOJ_AC_list=localStorage["ZOJ_"+My_ZOJ_ID+"_AC"].split(",");
 	input=document.getElementById("input_Pid");
 	str=input.value.match(/\d{4}/);
-	OJ=input.value.match(/POJ|ZOJ/);
+	OJ=input.value.match(/POJ|ZOJ/i);
 	if (OJ==null)
 		OJ=localStorage["Default_OJ"];
+	else
+		OJ=OJ.toUpperCase();
 	//$("#p_ver").text(OJ);
 	var AC_list;
 	if (OJ=="POJ")
