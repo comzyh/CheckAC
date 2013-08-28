@@ -238,7 +238,7 @@ function Save_Settings() {
 	Save_AC("ZOJ",My_ZOJ_ID);
 	localStorage["Default_OJ"] =$("#default_OJ").val();
 	localStorage["POJ_Agency"] =$("#POJ_Agency").val();
-	localStorage["POJ_Agency"] =$("#POJ_Agency").val();
+	localStorage["ZOJ_Agency"] =$("#ZOJ_Agency").val();
 	Save_ToDoList();
 	Info("设置成功保存","alert-success");
 }
