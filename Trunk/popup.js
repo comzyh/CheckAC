@@ -59,13 +59,15 @@ function check_Accepted()
 	if (OJ==null)
 		OJ=localStorage["Default_OJ"];
 	else
-		OJ=OJ.toUpperCase();
-	//$("#p_ver").text(OJ);
+		OJ=OJ[0].toUpperCase();
 	var AC_list;
 	if (OJ=="POJ")
 		AC_list=POJ_AC_list;
 	else
 		AC_list=ZOJ_AC_list;
+	$("#div_PID").removeClass("error success");
+	//$("#input_Pid").css({"background-color":"#FFF"});
+	$("#input_Pid").removeClass("txt-fail txt-success");
 	if (str!=null)
 	{
 		ac=0;
@@ -87,12 +89,6 @@ function check_Accepted()
 			$("#div_PID").addClass("error");
 			$("#input_Pid").addClass("txt-fail");
 		}
-	}
-	else
-	{
-		$("#div_PID").removeClass("error success");
-		//$("#input_Pid").css({"background-color":"#FFF"});
-		$("#input_Pid").removeClass("txt-fail txt-success");
 	}
 }
 //Todo List
