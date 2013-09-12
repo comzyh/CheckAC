@@ -243,8 +243,6 @@ function Save_Settings() {
 	localStorage["ZOJ_Agency"] =$("#ZOJ_Agency").val();
 	Save_ToDoList();
 	Info("设置成功保存","alert-success");
-	chrome.browserAction.setBadgeBackgroundColor({color:[0,255,0,100]});
-	chrome.browserAction.setBadgeText({text:My_ZOJ_ID});
 }
 function Load_Settings() {
 	My_POJ_ID=localStorage["My_POJ_ID"];
