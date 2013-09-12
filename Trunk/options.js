@@ -180,10 +180,12 @@ function new_Todo_item()
 	)
 	$("#Edit_ToDolist_item").modal('show');
 }
-function addline(PID,Comment,edit)
+function addline(PID,Comment,Finished)
 {
 	var newRow = "<tr><td class=\"Problem\"><span class=\"ToDo_PID\">PID</span></td><td class=\"Comment\"><span class=\"ToDo_Comment\">Comment</span></td></tr>";
     var line=$(newRow);
+    if(Finished)
+        line.addClass("ToDo_Finished");
 	if (typeof(PID)=="string")
 		line.find(".ToDo_PID").text(PID);
 	if (typeof(Comment)=="string")
@@ -205,7 +207,7 @@ function Save_ToDoList()
 		item.Comment=$(lines[i]).find(".ToDo_Comment").text();
 		list.push(item);
 	}
-	localStorage["ToDO_List"]=JSON.stringify(list); ;
+	localStorage["ToDO_List"]=JSON.stringify(list);
 }
 function Load_ToDoList()
 {
@@ -216,7 +218,7 @@ function Load_ToDoList()
 	{
    		list=JSON.parse(text);
 		for (var i=0;i<list.length;i++)
-			addline(list[i].PID,list[i].Comment);
+			addline(list[i].PID,list[i].Comment,list[i].Finish);
 	}
 	catch(err)//版本兼容性,支持1.0.2 之前版本
 	{
