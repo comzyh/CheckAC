@@ -89,7 +89,7 @@
 	margin-top:0;
 	padding:4px;
 }
-<!--ToDoList -->
+/*  ToDoList */
 #table_ToDo_Problem {
 	width:220px;
 }
@@ -106,8 +106,12 @@ td {
 	word-break: break-all;
 	word-wrap:break-word;
 }
+.ToDo_Finished span
+{
+    text-decoration:line-through;
+    color: gray;
+}
 #Author_Text p
 {
 	margin-bottom:5px;
-	
 }

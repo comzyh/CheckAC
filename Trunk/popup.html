@@ -6,49 +6,147 @@
 <!-- Bootstrap -->
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <style type="text/css">
+body
+{
+    width: 240px;
+    position: relative;
+}
+    /*滚动条宽度*/
+::-webkit-scrollbar {
+    width: 8px;
+}
+    /* 轨道样式 */
+::-webkit-scrollbar-track {
+
+}
+    /* Handle样式 */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0,0,0,0.2);
+}
+    /*当前窗口未激活的情况下*/
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0,0,0,0.1);
+}
+    /*hover到滚动条上*/
+::-webkit-scrollbar-thumb:vertical:hover{
+    background-color: rgba(0,0,0,0.3);
+}
+    /*滚动条按下*/
+::-webkit-scrollbar-thumb:vertical:active{
+    background-color: rgba(0,0,0,0.7);
+}
 #title {
-	margin-bottom:0;
+    margin-bottom: 0;
 }
+
 #main {
-	margin-left:10px;
-	margin-right:10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
+
 .txt-success {
-	background-color:#6F9 !important;
-	border-color:#6F9 !important;
-	color:black !important;
+    background-color: #6F9 !important;
+    border-color: #6F9 !important;
+    color: black !important;
 }
+
 .txt-fail {
-	background-color:#F99 !important;
-	border-color:#F99 !important;
-	color:black !important;
+    background-color: #F99 !important;
+    border-color: #F99 !important;
+    color: black !important;
 }
+
 .input_with_icon span {
-	top:0;
-	right:10px;
-	position:absolute;
-	line-height:30px;
+    top: 0;
+    right: 10px;
+    position: absolute;
+    line-height: 30px;
 }
+
 .input_with_icon {
-	height:28px;
-	position:relative;
+    height: 28px;
+    position: relative;
 }
-#div_ToDo_span
-{
-    position:relative;
+#ToDo_List {
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
 }
-#ToDoList tbody td
+
+.task {
+    padding-left: 36px;
+    height: 36px;
+    position: relative;
+    border-bottom: 1px solid #dddddd;
+    cursor: pointer;
+}
+.task:hover
 {
-	cursor:pointer;
+    background-color: #f5f5f5;
+}
+.task >.icon-ok {
+    position: absolute;
+    top: 11px;
+    left: 8px;
+}
+.task .PID
+{
+    padding-top: 8px;
+}
+.task i
+{
+    opacity: 0.2;
+}
+.task i:hover
+{
+    opacity: 1;
+}
+.ToDoList-Finished i:hover,
+.ToDoList-Finished i
+{
+    opacity: 0.1;
+}
+.ToDoList-Finished span
+{
+    text-decoration:line-through;
+    color: gray;
+}
+#ToDo_bar
+{
+    position: relative;
+    height: 30px;
+    padding-top:8px
+;
+}
+#ToDo_bar .icon-plus
+{
+    position: absolute;
+    right: 8px;
+    top:8px;
+    cursor: pointer;
+    opacity: 0.5;
+}
+#ToDo_bar .icon-plus:hover
+{
+    opacity: 1.0;
+}
+#Add_item
+{
+    position: relative;
+}
+#Add_PID
+{
+    width: 166px;
 }
 </style>
 </head>
 <body>
-<div class="span3" id=main>
+<div class="span3" id=main style="display:table;clear: both">
     <h4 id="title">AC检查器<small>
         <div class="text-right pull-right" id="Options"><a href="#"><i class="icon-wrench"></i><small>选项</small></a></div>
     </small>
-        <p class="text-right" id="p_ver"> <small>Beta version</small></p>
+        <p class="text-right" id="p_ver"> <small>Comzyh version</small></p>
     </h4>
   <div class="row">
     <div class="span3 text-center">
@@ -75,21 +173,28 @@
   </div>
   <!--ToDo_List -->
   <div class="row" id="div_ToDo">
-    <div class="span3 control-group  text-right" id="div_ToDo_span">
-    <table id="ToDoList" class="table  table-hover ">
-      <thead>
-        <tr>
-            <th><p>ToDoList<i class="icon-info-sign tool_tip" data-toggle="tooltip" data-placement="bottom" data-container ="#div_PID" title="" data-original-title="在本扩展[选项]页面中[ToDoList]选项卡编辑ToDoList"></i></p></th>
-        </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
+    <div class="span3">
+        <div id="ToDo_bar">
+        <div><strong>ToDoList</strong><i class="icon-info-sign tool_tip" data-toggle="tooltip" data-placement="bottom" data-container="#div_PID" title="" data-original-title="在本扩展[选项]页面中[ToDoList]选项卡编辑ToDoList"></i></div>
+        <i class="icon-plus" id="add_todo"></i>
+        </div>
+        <div  id="Add_item"  style="display:none">
+            <div class="input-append ">
+                <input id="Add_PID"  type="text" placeholder="输入题目" tabindex="10">
+                <button id="Save_Add_Todo"class="btn" type="button"><i class="icon-plus"></i></button>
+            </div>
+            <textarea id="Add_Comment"type="text" rows="2" placeholder="备注"style="resize:none;" tabindex="11" ></textarea>
+        </div>
       </div>
   </div>
 </div>
-<script src="js/jquery-2.0.3.min.js"></script> 
-<script src="js/bootstrap.min.js"></script> 
+<div class="" style="max-height:300px;overflow-y: auto;clear: both">
+
+    <ul id="ToDo_List">
+    </ul>
+</div>
+<script src="js/jquery-2.0.3.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="popup.js"></script>
 </body>
 <!-- Zyh Version -->

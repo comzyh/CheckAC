@@ -1,6 +1,7 @@
 var POJ_AC_list;
 var ZOJ_AC_list;
 var OJ;
+var Save_Add_Todo_down=0;
 function open_oj(agency)
 {
 	Pid=$("#input_Pid").val().match(/\d{4}/);
@@ -92,27 +93,72 @@ function check_Accepted()
 	}
 }
 //Todo List
-function Add_Todo(PID,Comment)
+function Add_Todo(PID,Comment,Finished,InsertTop)
 {
-	var line=$("<tr><td></td></tr>");
+	var line=$("<li></li>");
+    line.addClass("task");
+    if (Finished)
+        line.addClass("ToDoList-Finished");
     //<i class="icon-info-sign tool_tip" data-toggle="tooltip" data-placement="bottom" data-container="#div_PID" title="" data-original-title="输入题号后,背景变为绿色表示AC,红色表示尚未AC,按回车进入相应题目" style="opacity: 1;"></i>
-    var a=$("<span></span>");
-    a.addClass("tool_tip");
-    a.attr({//"href":"#",
+    var div=$("<div></div>");
+    div.addClass("PID");
+    var span=$("<span></span>");
+    span.addClass("tool_tip");
+    span.attr({
             "data-toggle":"tooltip",
             "data-placement":"bottom",
-            "data-container":"#div_ToDo_span",
+            "data-container":"body",
             "data-original-title":Comment
             });
-    a.text(PID);
-	line.find("td").attr("href","#");
-    line.click(function(){
+    span.text(PID);
+    span.tooltip();
+    div.append(span);
+    div.click(function(){
         $("#input_Pid").val(PID);
         check_Accepted();
         $("#input_Pid").focus();
     });
-    line.find("td").append(a);
-    $("#ToDoList tbody").append(line);
+    var i=$("<i></i>");
+    i.addClass("icon-ok");
+    i.click(function()
+    {
+       $(i).parent().toggleClass("ToDoList-Finished");
+       Save_ToDoList();
+    });
+    line.prepend(i);
+    line.append(div);
+    if(InsertTop)
+        $("#ToDo_List").prepend(line);
+    else
+        $("#ToDo_List").append(line);
+}
+function Add_new_Todo()
+{
+    $("#Add_item").css({"display":"block","opacity":1});
+    $("#Add_PID").focus();
+}
+function Save_Add_Todo()
+{
+    Save_Add_Todo_down=1;
+    PID=$("#Add_PID").val();
+    Comment=$("#Add_Comment").val();
+    if (PID!="")
+    {
+        Add_Todo(PID,Comment,0,1);
+        Save_ToDoList();
+    }
+    $("#Add_item").css("display","none");
+    $("#Add_PID").val("");
+    $("#Add_Comment").val("");
+    Save_Add_Todo_down=0;
+}
+function Add_LostFocus()
+{
+    if (!$("#Add_PID,#Add_Comment,#Save_Add_Todo").is(":focus") && !Save_Add_Todo_down)
+    {
+        $("#Add_item").fadeTo(250,0);
+        setTimeout(function(){$("#Add_item").css("display","none");},250);
+    }
 }
 function Load_ToDoList()
 {
@@ -123,7 +169,7 @@ function Load_ToDoList()
 	{
    		list=JSON.parse(text);
 		for (var i=0;i<list.length;i++)
-			Add_Todo(list[i].PID,list[i].Comment);
+			Add_Todo(list[i].PID,list[i].Comment,list[i].Finish);
 	}
 	catch(err)//版本兼容性,支持1.0.2 之前版本
 	{
@@ -134,6 +180,23 @@ function Load_ToDoList()
 			Add_Todo(sp[0],sp[1]);
 		}
 	}
+}
+function Save_ToDoList()
+{
+    var lines=$(".task");
+    var list =new Array();
+    for (var i=0;i<lines.length;i++)
+    {
+        var item=new Object;
+        item.PID=$(lines[i]).find("span").text();
+        item.Comment=$(lines[i]).find("span").attr("data-original-title");
+        if ($(lines[i]).hasClass("ToDoList-Finished"))
+            item.Finish=1;
+        else
+            item.Finish=0;
+        list.push(item);
+    }
+    localStorage["ToDO_List"]=JSON.stringify(list);
 
 }
 //Settings
@@ -145,9 +208,13 @@ function openOptions() {
             });
 	window.close();
 }
+//input_PID
 $('.input_with_icon input').focus(function (){$(this).parent().find("i").fadeTo("fast",0.3)});
 $('.input_with_icon input').blur(function (){$(this).parent().find("i").fadeTo("fast",1.0)});
-
+//Add new Todo
+$("#add_todo").click(Add_new_Todo);
+$("#Add_PID,#Add_Comment").blur(function(){setTimeout(Add_LostFocus,5);});
+$("#Save_Add_Todo").click(Save_Add_Todo);
 $("#orginal_OJ").click(function(){open_oj("No")});
 $("#njust_agency_oj").click(function(){open_oj("NJUST")});
 $("#Submit").click(function(){open_oj("Submit")});
@@ -159,6 +226,6 @@ document.getElementById("input_Pid").onkeypress = function(e){if(e.keyCode == 13
 document.getElementById("input_Pid").oninput=check_Accepted;
 Load_ToDoList();
 $('.tool_tip').tooltip();
-
+//$('.tool_tip').append("XXX");
 $("#input_Pid").focus();
 //Trunk
