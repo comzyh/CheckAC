@@ -97,7 +97,7 @@
 	opacity:0;
 }
 .edit-group a i {
-	opacity :0.2
+	opacity :0.4
 }
 .edit-group a:hover span, .edit-group a:hover i {
 	opacity:1;
@@ -110,6 +110,12 @@ td {
 {
     text-decoration:line-through;
     color: gray;
+}
+/*Follow*/
+td.success
+{
+    /*background-color:#dff0d8;*/
+   color:blue;
 }
 #Author_Text p
 {

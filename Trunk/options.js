@@ -1,5 +1,10 @@
 // JavaScript Document
 BGP=chrome.extension.getBackgroundPage();//
+function getQueryStr(str){
+    var rs = new RegExp("(^|)"+str+"=([^\&|#]*)(\&|$|#)","gi").exec(window.location.href), tmp;
+    if (rs)return rs[2];
+    return "";
+}
 //信息提示
 function Info(msg,cls)
 {
@@ -123,7 +128,6 @@ function Load_AC(OJ,ID)
 	$("#"+OJ+"_AC_Number").text(strs.length);
 }
 //ToDo List
-
 var ToDoLine
 function Remove_Todo_item()
 {
@@ -230,6 +234,103 @@ function Load_ToDoList()
 		}
 	}
 }
+//Follow
+function  Add_Foloow_line(Name,POJ_ID,ZOJ_ID)
+{
+    line=$("<tr></tr>");
+    _name=$("<td></td>");
+    __name=$("<span></span>").addClass("Follow_Name").text(Name);
+    _name.append(__name);
+    butgroup=$("<div class='pull-right edit-group'></div> ");
+    butref=$("<a href='#'><i class='icon-refresh'></i><span>刷新</span></a>");
+    butdel=$("<a href='#'><i class='icon-remove'></i><span>删除</span></a>");
+    butref.click(function(){
+        RefreshFollow(POJ_ID,ZOJ_ID);
+    });
+    butdel.click(function(){
+       $(this).parent().parent().parent().remove();
+    });
+    butgroup.append(butref,butdel);
+    _name.append(butgroup);
+    pojid=$("<td></td>").addClass("Follow_POJ_ID").text(POJ_ID);
+    pojac=$("<td></td>").addClass("Follow_POJ_AC");
+    zojid=$("<td></td>").addClass("Follow_ZOJ_ID").text(ZOJ_ID);
+    zojac=$("<td></td>").addClass("Follow_ZOJ_AC");
+    line.append(_name,pojid,pojac,zojid,zojac);
+    $("#table_Follow tbody").append(line);
+    Follow_Ref_Res("POJ",POJ_ID);
+    Follow_Ref_Res("ZOJ",ZOJ_ID);
+}
+function RefreshFollow(POJ_ID,ZOJ_ID)
+{
+    if (POJ_ID!="")
+    BGP.Refresh_POJbyID(POJ_ID,function(state,status)
+    {
+        if (state==4)
+            Follow_Ref_Res("POJ",POJ_ID,"success");
+        if (state==-1)
+            console.log(status);
+    });
+    if (ZOJ_ID!="")
+    BGP.Refresh_ZOJbyID(ZOJ_ID,function(state,status)
+    {
+        if (state==4)
+            Follow_Ref_Res("ZOJ",ZOJ_ID,"success");
+       if (state==-1)
+            console.log(status);
+    });
+}
+function Load_Follow()
+{
+    text=localStorage["Follow"];
+    if(text==null)
+        return;
+    list=JSON.parse(text);
+    for (var i=0;i<list.length;i++)
+        Add_Foloow_line(list[i].Name,list[i].POJ_ID,list[i].ZOJ_ID);
+}
+function Save_Follow()
+{
+	var lines=$("#table_Follow tbody tr");
+	var list =new Array();
+	for (var i=0;i<lines.length;i++)
+	{
+		var item=new Object;
+		item.Name=$(lines[i]).find(".Follow_Name").text();
+		item.POJ_ID=$(lines[i]).find(".Follow_POJ_ID").text();
+		item.ZOJ_ID=$(lines[i]).find(".Follow_ZOJ_ID").text();
+		list.push(item);
+	}
+	localStorage["Follow"]=JSON.stringify(list);
+}
+function New_Follow()
+{
+    if ($("#Add_Follow_Name").val()=="")return ;
+    Name=$("#Add_Follow_Name").val();$("#Add_Follow_Name").val("");
+    POJ_ID=$("#Add_Follow_POJ_ID").val();$("#Add_Follow_POJ_ID").val("");
+    ZOJ_ID=$("#Add_Follow_ZOJ_ID").val();$("#Add_Follow_ZOJ_ID").val("");
+    Add_Foloow_line(Name,POJ_ID,ZOJ_ID);
+    Save_Follow();
+}
+function Follow_Ref_Res(OJ,ID,style_class)
+{
+   IDs=$(".Follow_"+OJ+"_ID");
+   str=localStorage[OJ+"_" + ID + "_AC"];
+   if (str==null)return;
+   strs = str.match(/\d{4}/g);
+   if (strs==null)return;
+   if (style_class==null)style_class="";
+   for(i=0;i<IDs.length;i++)
+        if($(IDs[i]).text().toLowerCase()==ID.toLowerCase())
+            $(IDs[i]).parent().find(".Follow_"+OJ+"_AC").text(strs.length).addClass(style_class);
+}
+function Follow_RefAll()
+{
+    var lines=$("#table_Follow tbody tr");
+    var list =new Array();
+    for (var i=0;i<lines.length;i++)
+        RefreshFollow(POJ_ID=$(lines[i]).find(".Follow_POJ_ID").text(),$(lines[i]).find(".Follow_ZOJ_ID").text());
+}
 //Settings
 function Save_Settings() {
 	My_POJ_ID=$("#txt_POJ_ID").val();
@@ -242,6 +343,7 @@ function Save_Settings() {
 	localStorage["POJ_Agency"] =$("#POJ_Agency").val();
 	localStorage["ZOJ_Agency"] =$("#ZOJ_Agency").val();
 	Save_ToDoList();
+	Save_Follow();
 	Info("设置成功保存","alert-success");
 }
 function Load_Settings() {
@@ -256,6 +358,7 @@ function Load_Settings() {
 	Select_by_Text("#POJ_Agency",localStorage["POJ_Agency"]);
 	Select_by_Text("#ZOJ_Agency",localStorage["ZOJ_Agency"]);
 	Load_ToDoList();
+	Load_Follow();
 	if (localStorage["Default_OJ"]!=null)
 		Info("设置成功加载","alert-success");
 	calc_sum();
@@ -264,6 +367,8 @@ function Load_Settings() {
 $("#but_refresh_POJ").click(Refresh_POJbyID);
 $("#but_refresh_ZOJ").click(Refresh_ZOJbyID);
 $("#but_refresh_All").click(function(){Refresh_POJbyID();Refresh_ZOJbyID();});
+$("#Add_Follow_Add").click(New_Follow);
+$("#Follow_RefAll").click(Follow_RefAll);
 document.getElementById("txt_POJ_ID").onkeypress = function(e){if(e.keyCode == 13){Refresh_POJbyID(); } };
 document.getElementById("txt_ZOJ_ID").onkeypress = function(e){if(e.keyCode == 13){Refresh_ZOJbyID(); } };
 $("#but_save_setting").click(Save_Settings);
@@ -273,3 +378,4 @@ $("#Modal_Save").click(function(){Save_Todo_item()});
 Load_Settings();
 $('.tool_tip').tooltip();
 $(".versionNumber").text(chrome.app.getDetails().version);
+$('a[href=#tab_'+getQueryStr("tab")+']').tab('show');
