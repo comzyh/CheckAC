@@ -30,12 +30,11 @@ function My_ZOJ_AC()
 	My_ZOJ_ID=localStorage["My_ZOJ_ID"];
 	return localStorage["ZOJ_"+My_ZOJ_ID+"_AC"];
 }
-
 //刷新AC题目
-function loadXMLDoc(url,delegate,delegate2,ID) {
+function loadXMLDoc(url,delegate) {
 	var xmlhttp = new XMLHttpRequest();
 	if (xmlhttp != null) {
-		xmlhttp.onreadystatechange =function(){delegate(xmlhttp,ID,delegate2)};
+		xmlhttp.onreadystatechange =function(){delegate(xmlhttp)};
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send(null);
 	} else {
@@ -59,7 +58,9 @@ function POJ_res(xmlhttp,ID,delegate){
 	else delegate(r.readyState);
 }
 function Refresh_POJbyID(ID,delegate) {
-	loadXMLDoc("http://poj.org/userstatus?user_id=" + ID,POJ_res,delegate,ID);
+	loadXMLDoc("http://poj.org/userstatus?user_id=" + ID,function(xhr){
+        POJ_res(xhr,ID,delegate);
+        });
 }
 //-----ZOJ-----
 function ZOJ_res2(xhr,ID,delegate){
@@ -86,7 +87,9 @@ function ZOJ_res1(xhr,ID,delegate){
 			ID_Code = str.match(/userId=\d+/);
 			ID_Code=ID_Code[0].match(/\d+/);
 			delegate(4)	
-			loadXMLDoc("http://acm.zju.edu.cn/onlinejudge/showUserStatus.do?userId="+ ID_Code,ZOJ_res2,delegate,ID);
+			loadXMLDoc("http://acm.zju.edu.cn/onlinejudge/showUserStatus.do?userId="+ ID_Code,function(xhr){
+                ZOJ_res2(xhr,ID,delegate);
+            });
 		} else 
 			delegate(-1,r.status);
 	}
@@ -94,7 +97,9 @@ function ZOJ_res1(xhr,ID,delegate){
 }
 function Refresh_ZOJbyID(ID,delegate)
 {
-	loadXMLDoc("http://acm.zju.edu.cn/onlinejudge/showRuns.do?contestId=1&handle="+ ID,ZOJ_res1,delegate,ID);
+	loadXMLDoc("http://acm.zju.edu.cn/onlinejudge/showRuns.do?contestId=1&handle="+ ID,function(xhr){
+        ZOJ_res1(xhr,ID,delegate);
+        });
 }
 //监听
 chrome.extension.onRequest.addListener(RequestHandle);
