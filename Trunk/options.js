@@ -331,6 +331,44 @@ function Follow_RefAll()
     for (var i=0;i<lines.length;i++)
         RefreshFollow(POJ_ID=$(lines[i]).find(".Follow_POJ_ID").text(),$(lines[i]).find(".Follow_ZOJ_ID").text());
 }
+//RecentContest
+function LoadRecentContests()
+{
+    $("#table_RecentContests tbody tr").remove();
+    text=localStorage["RecentContests"];
+    if (text==null)return ;
+    list=JSON.parse(text);
+    for (var i=0;i<list.length;i++)
+        AddRecentContest(list[i]);
+}
+function AddRecentContest(contest)
+{
+    var line=$("<tr></tr>");
+    var oj=$("<td></td>").text(contest.oj);
+    var name=$("<a></a>").text(contest.name);
+    name.attr({
+        "href":contest.link,
+        "target":"_blank"
+    });
+    name=$("<td></td>").append(name);
+    var starttime=$("<td></td>").text(contest.start_time);
+    var week=$("<td></td>").text(contest.week);
+    var access=$("<td></td>").text(contest.access);
+    line.append(oj,name,starttime,week,access);
+    $("#table_RecentContests tbody").append(line);
+}
+function RefreshRecentContests()
+{
+    BGP.RefreshRecentContests(function(status,addition){
+        if (status==4)
+        {
+            LoadRecentContests();
+            Info("最近比赛刷新完成 --"+ new Date().toLocaleTimeString(),"alert-success");
+        }
+        if (status==-1)
+            Info("最近比赛刷新失败("+addition+")","alert-error");
+    });
+}
 //Settings
 function Save_Settings() {
 	My_POJ_ID=$("#txt_POJ_ID").val();
@@ -359,6 +397,7 @@ function Load_Settings() {
 	Select_by_Text("#ZOJ_Agency",localStorage["ZOJ_Agency"]);
 	Load_ToDoList();
 	Load_Follow();
+    LoadRecentContests();
 	if (localStorage["Default_OJ"]!=null)
 		Info("设置成功加载","alert-success");
 	calc_sum();
@@ -369,6 +408,7 @@ $("#but_refresh_ZOJ").click(Refresh_ZOJbyID);
 $("#but_refresh_All").click(function(){Refresh_POJbyID();Refresh_ZOJbyID();});
 $("#Add_Follow_Add").click(New_Follow);
 $("#Follow_RefAll").click(Follow_RefAll);
+$("#RefreshRecentContests").click(RefreshRecentContests);
 document.getElementById("txt_POJ_ID").onkeypress = function(e){if(e.keyCode == 13){Refresh_POJbyID(); } };
 document.getElementById("txt_ZOJ_ID").onkeypress = function(e){if(e.keyCode == 13){Refresh_ZOJbyID(); } };
 $("#but_save_setting").click(Save_Settings);

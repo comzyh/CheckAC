@@ -101,5 +101,24 @@ function Refresh_ZOJbyID(ID,delegate)
         ZOJ_res1(xhr,ID,delegate);
         });
 }
+//RecentContest
+function RefreshRecentContests(delegate)
+{
+    loadXMLDoc("http://contests.acmicpc.info/contests.json",function(xhr){
+        RecentContestsResponse(xhr,delegate);
+    });
+}
+function RecentContestsResponse(xhr,delegate)
+{
+    console.log(xhr.readyState,status);
+    if (xhr.readyState == 4) {
+        if (xhr.status == 200) {
+            localStorage["RecentContests"] = xhr.responseText;
+            delegate(4);
+        } else
+            delegate(-1,xhr.status);
+    }
+    else delegate(xhr.readyState);
+}
 //监听
 chrome.extension.onRequest.addListener(RequestHandle);

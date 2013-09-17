@@ -1,6 +1,6 @@
 {
 	"name" : "CheckAC",
-	"version" : "1.0.7",
+	"version" : "1.0.8",
 	"manifest_version" : 2,
 	"icons" : {
 		"48" : "Ac.png"
@@ -25,5 +25,5 @@
 	],
 	"web_accessible_resources" : ["Ac.png","/images/check.png","/images/nocheck.png"],
 	"options_page" : "options.html",
-	"permissions" : ["notifications", "http://icpc.njust.edu.cn/", "http://poj.org/","http://acm.zju.edu.cn/"]
+	"permissions" : ["notifications", "http://icpc.njust.edu.cn/", "http://poj.org/","http://acm.zju.edu.cn/","http://contests.acmicpc.info/"]
 }
