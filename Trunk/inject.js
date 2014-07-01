@@ -14,7 +14,7 @@ function exist(ac_list,id)
 			e=k-1;
 		else
 			return ac_list[k]==id;
-			
+
 	}
 	return ac_list[b]==id;
 }
@@ -24,8 +24,8 @@ function AC_response(response)
     zoj_ac=response.ZOJ_AC_list.match(/\d{4}/g);
 	for (i=0;i<table.length;i++)
 	{
-		poj_id = table[i].href.match(/\/Pku\/\d{4}|\/problem\?id=\d{4}/);//POJ
-		zoj_id = table[i].href.match(/\/Zju\/\d{4}|\/onlinejudge\/showProblem.do\?problemCode=\d{4}/);//ZOJ
+		poj_id = table[i].href.match(/\/Problem\/Pku\/\d{4}|\/problem\?id=\d{4}/);//POJ
+		zoj_id = table[i].href.match(/\/Problem\/Zju\/\d{4}|\/onlinejudge\/showProblem.do\?problemCode=\d{4}/);//ZOJ
         if (zoj_id==null && table[i].href.match(/\/onlinejudge\/showProblem.do\?problemId=\d+/)!=null)
             zoj_id=table[i].innerHTML.match(/\d{4}/);
 		if (poj_id ==null && zoj_id==null)

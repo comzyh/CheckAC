@@ -16,7 +16,7 @@
 	},
 	"content_scripts" : [{
 			"js" : ["inject.js"],
-			"matches" : ["http://icpc.njust.edu.cn/*","http://poj.org/status*","http://acm.zju.edu.cn/*"],
+			"matches" : ["http://icpc.njust.edu.cn/*","http://poj.org/status*","http://acm.zju.edu.cn/*","http://njoj.org/*"],
 			"run_at" : "document_end"
 		}, {
 			"css" : ["inject.css"],
@@ -25,5 +25,5 @@
 	],
 	"web_accessible_resources" : ["Ac.png","/images/check.png","/images/nocheck.png"],
 	"options_page" : "options.html",
-	"permissions" : ["notifications", "http://icpc.njust.edu.cn/", "http://poj.org/","http://acm.zju.edu.cn/","http://contests.acmicpc.info/"]
+	"permissions" : ["notifications", "http://icpc.njust.edu.cn/", "http://poj.org/","http://acm.zju.edu.cn/","http://njoj.org/","http://contests.acmicpc.info/"]
 }
