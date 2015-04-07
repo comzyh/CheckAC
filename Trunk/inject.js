@@ -24,6 +24,8 @@ function AC_response(response)
     zoj_ac=response.ZOJ_AC_list.match(/\d{4}/g);
 	for (i=0;i<table.length;i++)
 	{
+		if (table[i].href.endsWith("#") || table[i].href.indexOf("Submit") != -1 || table[i].href.indexOf("submit") != -1)
+			continue;
 		poj_id = table[i].href.match(/\/Problem\/Pku\/\d{4}|\/problem\?id=\d{4}/);//POJ
 		zoj_id = table[i].href.match(/\/Problem\/Zju\/\d{4}|\/onlinejudge\/showProblem.do\?problemCode=\d{4}/);//ZOJ
         if (zoj_id==null && table[i].href.match(/\/onlinejudge\/showProblem.do\?problemId=\d+/)!=null)
