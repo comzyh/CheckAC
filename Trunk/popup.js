@@ -20,10 +20,10 @@ function open_oj(agency)
 		switch(a)
 		{
 			case 0:pre='http://poj.org/problem?id=';break;
-			case 1:pre='http://icpc.njust.edu.cn/Pku/';break;
+			case 1:pre='http://icpc.njust.edu.cn/Problem/Pku/';break;
 			case 2:pre='http://poj.org/submit?problem_id=';break;
-			case 3:pre='http://icpc.njust.edu.cn/Pku/Submit/';break;
-		}	
+			case 3:pre='http://icpc.njust.edu.cn/Submit/Problem/Pku/';break;
+		}
 	}
 	else
 	{
@@ -35,15 +35,15 @@ function open_oj(agency)
 		switch(a)
 		{
 			case 0:pre='http://acm.zju.edu.cn/onlinejudge/showProblem.do?problemCode=';break;
-			case 1:pre='http://icpc.njust.edu.cn/Zju/';break;
+			case 1:pre='http://icpc.njust.edu.cn/Problem/Zju/';break;
 			case 2:pre='http://acm.zju.edu.cn/onlinejudge/submit.do?problemId=';break;
-			case 3:pre='http://icpc.njust.edu.cn/Zju/Submit/';break;
-		}	
+			case 3:pre='http://icpc.njust.edu.cn/Submit/Problem/Zju/';break;
+		}
 	}
 	console.log(pre,Pid);
 	chrome.tabs.create({
 		url:pre+Pid
-	});	
+	});
 	self.close();
 }
 function check_Accepted()
@@ -81,7 +81,7 @@ function check_Accepted()
 			//input.style.backgroundColor="#6F9";
 			$("#div_PID").addClass("success");
 			$("#input_Pid").addClass("txt-success");
-			
+
 		}
 		else
 		{
@@ -204,7 +204,7 @@ function openOptions() {
 	url="options.html";
 	url=chrome.extension.getURL(url);
 	chrome.tabs.create({
-                url:url              
+                url:url
             });
 	window.close();
 }
