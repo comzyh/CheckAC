@@ -37,7 +37,7 @@ function AC_response(response)
 			div.src=chrome.extension.getURL("images/check.png");
 		else
 			div.src=chrome.extension.getURL("images/nocheck.png");
-        table[i].parentElement.insertBefore(div,table[i]);
+        table[i].insertBefore(div,table[i].firstChild)
 	}
 }
 chrome.extension.sendRequest({type:"All_AC_list"},AC_response);
